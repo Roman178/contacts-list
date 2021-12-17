@@ -1,24 +1,12 @@
 const webpack = require("webpack");
 const path = require("path");
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "./src/index.tsx"),
 
   module: {
     rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        enforce: "pre",
-        use: [
-          {
-            options: {
-              eslintPath: require.resolve("eslint"),
-            },
-            loader: require.resolve("eslint-loader"),
-          },
-        ],
-        exclude: /node_modules/,
-      },
       {
         test: /\.tsx?$/,
         use: "ts-loader",
@@ -63,12 +51,19 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "bundle.js",
+    publicPath: "/",
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin({
+      extensions: ["ts", "tsx"],
+    }),
+  ],
   devServer: {
     static: path.join(__dirname, "./dist"),
     compress: true,
     port: 8080,
     hot: true,
+    historyApiFallback: true,
   },
 };
