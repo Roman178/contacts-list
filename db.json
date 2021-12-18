@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "email": "test@test.com",
+      "password": "$2a$10$btosBdleUiCPBN2vO90R9uOrH0.d/MVUt3s5qBdNHfkCYxcqTVTwa",
+      "id": 1
+    },
+    {
+      "email": "test2@test2.com",
+      "password": "$2a$10$.FLpq2s/D/HkMur8UA3TSeD4Dk4i6CQTOEC2iNlneV7ypJgmSOtAe",
+      "id": 2
+    }
+  ],
+  "contacts": [
+    {
+      "id": 1,
+      "name": "John"
+    }
+  ]
+}

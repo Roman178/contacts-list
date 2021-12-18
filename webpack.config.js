@@ -65,5 +65,11 @@ module.exports = {
     port: 8080,
     hot: true,
     historyApiFallback: true,
+    // proxy: {
+    //   "/api": {
+    //     target: "http://localhost:5000",
+    //     changeOrigin: true,
+    //   },
+    // },
   },
 };
