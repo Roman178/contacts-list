@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode=development",
-    "server": "json-server -p 5000  -w db.json -m ./node_modules/json-server-auth",
+    "server": "json-server -p 5000 -d 1200 -w db.json -m ./node_modules/json-server-auth",
     "dev": "concurrently \"npm run start\" \"npm run server\""
   },
   "author": "\"Roman Ismagilov <ismagilov771@gmail.com>",
@@ -40,6 +40,8 @@
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.2",
+    "mobx": "^6.3.9",
+    "mobx-react-lite": "^3.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0"

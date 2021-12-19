@@ -10,11 +10,11 @@ const PrivateRoute: FC<PrivateRouteProps & RouteProps> = ({
   children,
   redirectPath,
   isConditionTrue,
-  ...otherProps
+  ...routeProps
 }) => {
   return (
     <Route
-      {...otherProps}
+      {...routeProps}
       render={() =>
         isConditionTrue ? children : <Redirect to={redirectPath} />
       }
