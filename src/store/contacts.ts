@@ -1,22 +1,51 @@
-// import { makeAutoObservable, observable } from "mobx";
+/* eslint-disable */
 
-// export interface IContact {
-//   name: string;
-//   phone: number;
-// }
+import { makeObservable, observable, action } from "mobx";
 
-// class Contacts {
-//   public list: IContact[];
+interface IContact {
+  id?: number;
+  userId: number;
+  name: string;
+  tel: string;
+}
 
-//   constructor() {
-//     makeAutoObservable(this, {
-//       list: observable,
-//     });
-//   }
+class Contacts {
+  public contacts: IContact[];
 
-//   private fetchContacts = (userId: number) => {
-//     return fetch(`${BASE_URL}`);
-//   };
+  constructor() {
+    makeObservable(this, {
+      contacts: observable,
+      getContacts: action,
+      addContact: action,
+    });
+  }
 
-//   public getContacts = (userId: number) => {};
-// }
+  private getToken = (): string => {
+    return JSON.parse(localStorage.getItem("userData"))?.token;
+  };
+
+  public getContacts = (userId: number): Promise<void> => {
+    if (!this.getToken()) return;
+
+    return fetch(`http://localhost:5000/660/contacts?userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => (this.contacts = data));
+  };
+
+  public addContact = (contact: IContact) => {
+    return fetch("http://localhost:5000/660/contacts", {
+      body: JSON.stringify(contact),
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    });
+  };
+}
+
+const contacts = new Contacts();
+
+export default contacts;

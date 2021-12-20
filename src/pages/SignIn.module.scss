@@ -1,0 +1,32 @@
+.input {
+  border: black 1px solid;
+  display: block;
+  transition: all 0.2s linear;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.inputInvalid {
+  border: red 1px solid;
+}
+
+.inputErrorValid {
+  display: block;
+  opacity: 0;
+  transition: all 0.2s linear;
+}
+
+.inputErrorInvalid {
+  display: block;
+  opacity: 1;
+  transition: all 0.2s linear;
+  color: red;
+}
+
+.form {
+  width: 200px;
+  height: 400px;
+  background-color: rgb(245, 247, 243);
+}

@@ -5,20 +5,22 @@ interface IAuthResult {
   user: { email: string; id: number };
 }
 
-// interface ISignInResult {
-//   email: string;
-//   id: number;
-//   password: string;
-// }
+interface ISignInResult {
+  email: string;
+  id: number;
+  password: string;
+}
 
 class Store {
   public isSignedIn: boolean;
   public loadingUser: boolean;
+  public email: string;
 
   constructor() {
     makeObservable(this, {
       isSignedIn: observable,
       loadingUser: observable,
+      email: observable,
       authenticate: action,
       signIn: action,
       signOut: action,
@@ -47,6 +49,7 @@ class Store {
           JSON.stringify({ token: data.accessToken, userId: data.user.id })
         );
         this.isSignedIn = true;
+        this.email = data.user.email;
       })
       .catch((err) => console.error(err))
       .finally(() => {
@@ -62,6 +65,7 @@ class Store {
 
     if (!token) {
       this.isSignedIn = false;
+      this.email = "";
       this.loadingUser = false;
       return;
     }
@@ -76,12 +80,14 @@ class Store {
         if (!res.ok) return res.json().then((err) => Promise.reject(err));
         return res.json();
       })
-      .then(() => {
+      .then((data: ISignInResult) => {
         this.isSignedIn = true;
+        this.email = data.email;
       })
       .catch((err) => {
         console.error(err);
         this.isSignedIn = false;
+        this.email = "";
       })
       .finally(() => {
         this.loadingUser = false;
@@ -91,6 +97,7 @@ class Store {
   public signOut = (): void => {
     localStorage.removeItem("userData");
     this.isSignedIn = false;
+    this.email = "";
   };
 }
 

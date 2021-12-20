@@ -14,7 +14,21 @@
   "contacts": [
     {
       "id": 1,
-      "name": "John"
+      "userId": 1,
+      "name": "John",
+      "tel": "+79999999999"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "name": "Mike",
+      "tel": "+79111111111"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "name": "Rob",
+      "tel": "+79211234567"
     }
   ]
 }
