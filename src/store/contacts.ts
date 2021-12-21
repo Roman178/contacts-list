@@ -1,10 +1,12 @@
 /* eslint-disable */
 
 import { makeObservable, observable, action } from "mobx";
+import { BASE_URL } from "../constants";
+import { request } from "../api";
 
 interface IContact {
   id?: number;
-  userId: number;
+  userId?: number;
   name: string;
   tel: string;
 }
@@ -24,26 +26,46 @@ class Contacts {
     return JSON.parse(localStorage.getItem("userData"))?.token;
   };
 
-  public getContacts = (userId: number): Promise<void> => {
+  private getUserId = (): number => {
+    return JSON.parse(localStorage.getItem("userData"))?.userId;
+  };
+
+  public getContacts = async (): Promise<void> => {
     if (!this.getToken()) return;
 
-    return fetch(`http://localhost:5000/660/contacts?userId=${userId}`, {
-      headers: {
-        Authorization: `Bearer ${this.getToken()}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => (this.contacts = data));
+    try {
+      const data = await request(
+        `/660/contacts?userId=${this.getUserId()}`,
+        "GET",
+        { Authorization: `Bearer ${this.getToken()}` }
+      );
+      this.contacts = data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  public addContact = (contact: IContact) => {
-    return fetch("http://localhost:5000/660/contacts", {
-      body: JSON.stringify(contact),
-      headers: {
-        Authorization: `Bearer ${this.getToken()}`,
-      },
-    });
+  public addContact = async (contact: IContact) => {
+    try {
+      const data = await request(
+        `/660/contacts`,
+        "POST",
+        {
+          Authorization: `Bearer ${this.getToken()}`,
+          "Content-Type": "application/json",
+        },
+        JSON.stringify({ ...contact, userId: this.getUserId() })
+      );
+
+      this.contacts.push(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  public deleteContact = (contactId: number) => {};
+
+  public updateContact = (contact: IContact) => {};
 }
 
 const contacts = new Contacts();

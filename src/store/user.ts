@@ -1,14 +1,16 @@
 import { makeObservable, observable, action } from "mobx";
+// import { BASE_URL } from "../constants";
+import { request } from "../api";
 
 interface IAuthResult {
-  accessToken: string;
-  user: { email: string; id: number };
-}
-
-interface ISignInResult {
   email: string;
   id: number;
   password: string;
+}
+
+interface ISignInResult {
+  accessToken: string;
+  user: { email: string; id: number };
 }
 
 class Store {
@@ -27,37 +29,9 @@ class Store {
     });
   }
 
-  public authenticate = (email: string, password: string): Promise<void> => {
-    this.loadingUser = true;
-    return fetch("http://localhost:5000/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) return res.json().then((err) => Promise.reject(err));
-        return res.json();
-      })
-      .then((data: IAuthResult) => {
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({ token: data.accessToken, userId: data.user.id })
-        );
-        this.isSignedIn = true;
-        this.email = data.user.email;
-      })
-      .catch((err) => console.error(err))
-      .finally(() => {
-        this.loadingUser = false;
-      });
-  };
+  public authenticate = (): Promise<void> | void => {
+    console.log("auth");
 
-  public signIn = (): Promise<void> | void => {
     this.loadingUser = true;
 
     const token = JSON.parse(localStorage.getItem("userData"))?.token;
@@ -70,25 +44,44 @@ class Store {
       return;
     }
 
-    return fetch(`http://localhost:5000/600/users/${userId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    return request(`/600/users/${userId}`, "GET", {
+      Authorization: `Bearer ${token}`,
     })
-      .then((res) => {
-        if (!res.ok) return res.json().then((err) => Promise.reject(err));
-        return res.json();
-      })
-      .then((data: ISignInResult) => {
+      .then((data: IAuthResult) => {
         this.isSignedIn = true;
         this.email = data.email;
       })
-      .catch((err) => {
+      .catch((err: string) => {
         console.error(err);
         this.isSignedIn = false;
         this.email = "";
       })
+      .finally(() => {
+        this.loadingUser = false;
+      });
+  };
+
+  public signIn = (email: string, password: string): Promise<void> => {
+    this.loadingUser = true;
+
+    return request(
+      `/signin`,
+      "POST",
+      { "Content-Type": "application/json" },
+      JSON.stringify({
+        email,
+        password,
+      })
+    )
+      .then((data: ISignInResult) => {
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ token: data.accessToken, userId: data.user.id })
+        );
+        this.isSignedIn = true;
+        this.email = data.user.email;
+      })
+      .catch((err) => console.error(err))
       .finally(() => {
         this.loadingUser = false;
       });

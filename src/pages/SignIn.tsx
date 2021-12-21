@@ -25,7 +25,7 @@ interface IInputsNames {
 }
 
 const SignIn: FC = () => {
-  const { authenticate, loadingUser } = userStore;
+  const { signIn, loadingUser } = userStore;
 
   const [validForm, setValidForm] = useState(false);
   const [inputs, setInputs] = useState<IInputsNames>({
@@ -49,7 +49,8 @@ const SignIn: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    authenticate(inputs[EMAIL_INPUT].value, inputs[PASSWORD_INPUT].value);
+
+    signIn(inputs[EMAIL_INPUT].value, inputs[PASSWORD_INPUT].value);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,79 +64,72 @@ const SignIn: FC = () => {
   };
 
   return (
-    <>
-      {loadingUser ? (
-        <p>Loading...</p>
-      ) : (
-        <form className={css.form} onSubmit={handleSubmit}>
-          <label htmlFor="email">
-            Ваш email
-            <input
-              className={cn(css.input, {
-                [css.inputInvalid]: inputs[EMAIL_INPUT].isValid === false,
-              })}
-              value={inputs[EMAIL_INPUT].value}
-              required
-              id="email"
-              type="email"
-              name={EMAIL_INPUT}
-              onChange={handleChange}
-              onFocus={(e) =>
-                setInputs((prev) => ({
-                  ...prev,
-                  [EMAIL_INPUT]: {
-                    ...prev[EMAIL_INPUT],
-                    isValid: e.target.validity.valid,
-                  },
-                }))
-              }
-            />
-            <span
-              className={cn(css.inputErrorValid, {
-                [css.inputErrorInvalid]: inputs[EMAIL_INPUT].isValid === false,
-              })}
-            >
-              Некорректный email
-            </span>
-          </label>
-          <label htmlFor="password">
-            Пароль
-            <input
-              className={cn(css.input, {
-                [css.inputInvalid]: inputs[PASSWORD_INPUT].isValid === false,
-              })}
-              value={inputs[PASSWORD_INPUT].value}
-              onChange={handleChange}
-              id="password"
-              type="password"
-              name={PASSWORD_INPUT}
-              pattern="^.{4,}$"
-              required
-              onFocus={(e) =>
-                setInputs((prev) => ({
-                  ...prev,
-                  [PASSWORD_INPUT]: {
-                    ...prev[PASSWORD_INPUT],
-                    isValid: e.target.validity.valid,
-                  },
-                }))
-              }
-            />
-            <span
-              className={cn(css.inputErrorValid, {
-                [css.inputErrorInvalid]:
-                  inputs[PASSWORD_INPUT].isValid === false,
-              })}
-            >
-              Пароль должен быть не менее 4 символов
-            </span>
-          </label>
-          <button disabled={!validForm} type="submit">
-            Войти
-          </button>
-        </form>
-      )}
-    </>
+    <form className={css.form} onSubmit={handleSubmit}>
+      <label htmlFor="email">
+        Ваш email
+        <input
+          className={cn(css.input, {
+            [css.inputInvalid]: inputs[EMAIL_INPUT].isValid === false,
+          })}
+          value={inputs[EMAIL_INPUT].value}
+          required
+          id="email"
+          type="email"
+          name={EMAIL_INPUT}
+          onChange={handleChange}
+          onFocus={(e) =>
+            setInputs((prev) => ({
+              ...prev,
+              [EMAIL_INPUT]: {
+                ...prev[EMAIL_INPUT],
+                isValid: e.target.validity.valid,
+              },
+            }))
+          }
+        />
+        <span
+          className={cn(css.inputErrorValid, {
+            [css.inputErrorInvalid]: inputs[EMAIL_INPUT].isValid === false,
+          })}
+        >
+          Некорректный email
+        </span>
+      </label>
+      <label htmlFor="password">
+        Пароль
+        <input
+          className={cn(css.input, {
+            [css.inputInvalid]: inputs[PASSWORD_INPUT].isValid === false,
+          })}
+          value={inputs[PASSWORD_INPUT].value}
+          onChange={handleChange}
+          id="password"
+          type="password"
+          name={PASSWORD_INPUT}
+          pattern="^.{4,}$"
+          required
+          onFocus={(e) =>
+            setInputs((prev) => ({
+              ...prev,
+              [PASSWORD_INPUT]: {
+                ...prev[PASSWORD_INPUT],
+                isValid: e.target.validity.valid,
+              },
+            }))
+          }
+        />
+        <span
+          className={cn(css.inputErrorValid, {
+            [css.inputErrorInvalid]: inputs[PASSWORD_INPUT].isValid === false,
+          })}
+        >
+          Пароль должен быть не менее 4 символов
+        </span>
+      </label>
+      <button disabled={!validForm} type="submit">
+        Войти
+      </button>
+    </form>
   );
 };
 
