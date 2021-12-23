@@ -1,10 +1,9 @@
-/* eslint-disable */
+// /* eslint-disable */
 
 import { makeObservable, observable, action } from "mobx";
-import { BASE_URL } from "../constants";
 import { request } from "../api";
 
-interface IContact {
+export interface IContact {
   id?: number;
   userId?: number;
   name: string;
@@ -13,10 +12,12 @@ interface IContact {
 
 class Contacts {
   public contacts: IContact[];
+  public loading: boolean;
 
   constructor() {
     makeObservable(this, {
       contacts: observable,
+      loading: observable,
       getContacts: action,
       addContact: action,
     });
@@ -33,6 +34,7 @@ class Contacts {
   public getContacts = async (): Promise<void> => {
     if (!this.getToken()) return;
 
+    this.loading = true;
     try {
       const data = await request(
         `/660/contacts?userId=${this.getUserId()}`,
@@ -42,10 +44,13 @@ class Contacts {
       this.contacts = data;
     } catch (error) {
       console.error(error);
+    } finally {
+      this.loading = false;
     }
   };
 
-  public addContact = async (contact: IContact) => {
+  public addContact = async (contact: IContact): Promise<void> => {
+    this.loading = true;
     try {
       const data = await request(
         `/660/contacts`,
@@ -60,12 +65,50 @@ class Contacts {
       this.contacts.push(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      this.loading = false;
     }
   };
 
-  public deleteContact = (contactId: number) => {};
+  public deleteContact = async (contactId: number): Promise<void> => {
+    this.loading = true;
+    try {
+      await request(`/660/contacts/${contactId}`, "DELETE", {
+        Authorization: `Bearer ${this.getToken()}`,
+        "Content-Type": "application/json",
+      });
 
-  public updateContact = (contact: IContact) => {};
+      this.contacts = this.contacts.filter((c) => c.id !== contactId);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
+  };
+
+  public updateContact = async (contact: IContact): Promise<void> => {
+    this.loading = true;
+    try {
+      const data = await request(
+        `/660/contacts/${contact.id}`,
+        "PUT",
+        {
+          Authorization: `Bearer ${this.getToken()}`,
+          "Content-Type": "application/json",
+        },
+        JSON.stringify({ ...contact, userId: this.getUserId() })
+      );
+
+      const updatedItemIndex = this.contacts.findIndex(
+        (con) => con.id === contact.id
+      );
+      this.contacts.splice(updatedItemIndex, 1, data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
+  };
 }
 
 const contacts = new Contacts();

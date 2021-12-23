@@ -1,5 +1,4 @@
 import { makeObservable, observable, action } from "mobx";
-// import { BASE_URL } from "../constants";
 import { request } from "../api";
 
 interface IAuthResult {
@@ -81,7 +80,10 @@ class Store {
         this.isSignedIn = true;
         this.email = data.user.email;
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err);
+        throw err;
+      })
       .finally(() => {
         this.loadingUser = false;
       });

@@ -1,4 +1,4 @@
-/* eslint-disable */
+// /* eslint-disable */
 
 import React, {
   FC,
@@ -25,7 +25,7 @@ interface IInputsNames {
 }
 
 const SignIn: FC = () => {
-  const { signIn, loadingUser } = userStore;
+  const { signIn } = userStore;
 
   const [validForm, setValidForm] = useState(false);
   const [inputs, setInputs] = useState<IInputsNames>({
@@ -47,10 +47,13 @@ const SignIn: FC = () => {
     );
   }, [inputs]);
 
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-
-    signIn(inputs[EMAIL_INPUT].value, inputs[PASSWORD_INPUT].value);
+  const handleSubmit = async (e: SyntheticEvent) => {
+    try {
+      e.preventDefault();
+      await signIn(inputs[EMAIL_INPUT].value, inputs[PASSWORD_INPUT].value);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +68,8 @@ const SignIn: FC = () => {
 
   return (
     <form className={css.form} onSubmit={handleSubmit}>
-      <label htmlFor="email">
+      <h2 className={css.formTitle}>Войти в личный кабинет</h2>
+      <label htmlFor="email" className={css.label}>
         Ваш email
         <input
           className={cn(css.input, {
@@ -95,7 +99,7 @@ const SignIn: FC = () => {
           Некорректный email
         </span>
       </label>
-      <label htmlFor="password">
+      <label htmlFor="password" className={css.label}>
         Пароль
         <input
           className={cn(css.input, {
@@ -126,7 +130,7 @@ const SignIn: FC = () => {
           Пароль должен быть не менее 4 символов
         </span>
       </label>
-      <button disabled={!validForm} type="submit">
+      <button disabled={!validForm} type="submit" className={css.signInBtn}>
         Войти
       </button>
     </form>

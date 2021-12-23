@@ -12,8 +12,10 @@ const Header: FC = () => {
     <header className={css.root}>
       {isSignedIn && (
         <>
-          <span>{email}</span>
-          <button onClick={() => signOut()}>Выйти</button>
+          <span className={css.email}>{email}</span>
+          <button className={css.signOutBtn} onClick={() => signOut()}>
+            Выйти
+          </button>
         </>
       )}
     </header>

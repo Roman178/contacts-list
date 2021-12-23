@@ -1,0 +1,67 @@
+.addForm {
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  justify-content: space-between;
+  width: 406px;
+}
+
+.subtitle {
+  font-weight: bold;
+}
+
+.labelAdd {
+  display: flex;
+}
+
+.inputAdd {
+  flex-basis: 100%;
+  margin-left: 10px;
+}
+
+.list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.btn {
+  height: 30px;
+  background-color: #287567;
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 70px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: initial;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  border: 1px solid gray;
+}
+
+.btnDelete {
+  height: 30px;
+  background-color: #991111;
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 70px;
+  margin-left: auto;
+}
+
+.name {
+  margin-right: 10px;
+}
+
+.tel {
+  margin-right: 10px;
+}

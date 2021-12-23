@@ -6,50 +6,35 @@
       "id": 1
     },
     {
-      "email": "test2@test2.com",
-      "password": "$2a$10$.FLpq2s/D/HkMur8UA3TSeD4Dk4i6CQTOEC2iNlneV7ypJgmSOtAe",
+      "email": "q@w.ru",
+      "password": "$2a$10$QY6PS9FnQr36i80QHp7h.OQ6dE/CqJaiyepPdeyJ.pLZ0XnEBX8K.",
       "id": 2
     }
   ],
   "contacts": [
     {
+      "id": 7,
+      "name": "Vas",
+      "tel": "55555555",
+      "userId": 1
+    },
+    {
+      "id": 10,
+      "name": "Petya",
+      "tel": "333333",
+      "userId": 1
+    },
+    {
       "id": 1,
-      "userId": 1,
-      "name": "John",
-      "tel": "+79999999999"
+      "name": "Mike",
+      "tel": "999998888",
+      "userId": 2
     },
     {
       "id": 2,
-      "userId": 1,
-      "name": "Mike",
-      "tel": "+79111111111"
-    },
-    {
-      "id": 3,
-      "userId": 2,
-      "name": "Rob",
-      "tel": "+79211234567"
-    },
-    {
-      "id": 4,
-      "userId": 2,
-      "name": "Stan",
-      "tel": "+79451234567"
-    },
-    {
-      "id": 5
-    },
-    {
-      "name": "gfds",
-      "tel": "4356543",
-      "userId": 1,
-      "id": 6
-    },
-    {
-      "name": "das",
-      "tel": "7868768",
-      "userId": 1,
-      "id": 7
+      "name": "John",
+      "tel": "435435436543",
+      "userId": 2
     }
   ]
 }

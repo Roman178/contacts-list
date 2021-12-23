@@ -1,8 +1,22 @@
 .root {
   height: 70px;
-  background-color: rgb(234, 245, 236);
+  background-color: rgb(200, 243, 208);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 0 30px;
+}
+
+.signOutBtn {
+  height: 30px;
+  width: 70px;
+  background-color: #287567;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.email {
+  font-size: 16px;
+  margin-right: 10px;
 }
